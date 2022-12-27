@@ -13,6 +13,8 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     personsService
@@ -49,9 +51,12 @@ const App = () => {
       const confirm = window.confirm(`${samePerson.name} already exists do you want to update the number?`)
       if(confirm){
         personsService
-        .update(samePerson.id, samePerson, newNumber)
+        .update(samePerson.id, samePerson, newNumber) 
         .then(returnedValue => {
-          console.log(returnedValue);
+          setMessage(`${samePerson.name} updated`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 2000)
           setNewName('')
           setNewNumber('')
           setPersons(persons.map(person => person.id !== samePerson.id ? person : returnedValue))
@@ -66,6 +71,10 @@ const App = () => {
       personsService
       .create(newObject)
       .then(returnedData => {
+        setMessage(`${newObject.name} added`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 2000)
         setPersons(persons.concat(returnedData))
         setFilteredPersons(filteredPersons.concat(returnedData))
         setNewName('')
@@ -81,6 +90,10 @@ const App = () => {
       personsService
       .remove(id)
       .then(() => {
+        setError(`${person.name} deleted`)
+          setTimeout(() => {
+            setError(null)
+          }, 2000)
         setPersons(persons.filter(person => person.id !== id))
         setFilteredPersons(persons.filter(person => person.id !== id))
       })
@@ -94,6 +107,8 @@ const App = () => {
         filterValue={filter}
       />
       <h1>Add Number</h1>
+      <div className='message container'>{message}</div>
+      <div className='error container'>{error}</div>
       <PersonForm 
         onSubmit={addPerson}
         onNameChange={handleNameChange}
