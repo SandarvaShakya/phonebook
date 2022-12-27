@@ -43,12 +43,21 @@ const App = () => {
   }
 
   const addPerson = (event) => {
-    console.log('Check');
     event.preventDefault()
-    if(persons.find(person => person.name.toLowerCase() === newName.toLowerCase())){
-      alert(`${newName} is already added to the phonebook.`)
-      setNewName('')
-      setNewNumber('')
+    const samePerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+    if(samePerson){
+      const confirm = window.confirm(`${samePerson.name} already exists do you want to update the number?`)
+      if(confirm){
+        personsService
+        .update(samePerson.id, samePerson, newNumber)
+        .then(returnedValue => {
+          console.log(returnedValue);
+          setNewName('')
+          setNewNumber('')
+          setPersons(persons.map(person => person.id !== samePerson.id ? person : returnedValue))
+          setFilteredPersons(persons.map(person => person.id !== samePerson.id ? person : returnedValue))
+        })
+      }
     }else{
       const newObject = {
         name: newName,
