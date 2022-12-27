@@ -3,6 +3,12 @@ const Person = (props) => {
         <div className='flex container'>
             <p>{props.person.name}</p>
             <p>{props.person.number}</p>
+            <button 
+                className="btn btn--delete"
+                onClick={props.onClick}
+            >
+                Delete
+            </button>
         </div>
     )
 }

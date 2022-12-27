@@ -65,6 +65,19 @@ const App = () => {
     }
   }
 
+  const deletePerson = (id) => {
+    const person = persons.find(person => person.id === id)
+    const confirm = window.confirm(`Confirm delete ${person.name}`);
+    if(id && confirm){
+      personsService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+        setFilteredPersons(persons.filter(person => person.id !== id))
+      })
+    }
+  }
+
   return (
     <div>
       <Filter 
@@ -84,6 +97,7 @@ const App = () => {
         <Person 
           key={person.id} 
           person={person}
+          onClick={() => deletePerson(person.id)}
         />)
       }
     </div>
