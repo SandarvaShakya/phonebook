@@ -57,6 +57,10 @@ input{
   margin: 0 auto;
 }
 
+.flex-item{
+  width: 30%;
+}
+
 .filter{
   margin: 2em auto;
 }
